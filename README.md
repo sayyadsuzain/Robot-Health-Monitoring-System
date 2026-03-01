@@ -56,7 +56,7 @@ For full details, see the **[MASTER_RUN_GUIDE.md](MASTER_RUN_GUIDE.md)**.
 
 ---
 
-## � Author
+## 👤 Author
 - **Suzain Sayyad** - Lead Developer & SQL Architect
 
 ---
