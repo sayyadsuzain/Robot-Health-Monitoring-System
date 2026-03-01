@@ -1,0 +1,43 @@
+# Engine Health & RUL Prediction Project Walkthrough
+
+This project implements a fully functional predictive maintenance pipeline for robot/engine sensors using MySQL and Streamlit.
+
+## Components
+
+### 1. SQL-Centric Pipeline
+A series of optimized SQL scripts that handle:
+- **Data Ingestion**: Loading large-scale CMAPSS datasets (FD001-FD004) from text files.
+- **Relational Integrity**: Managing datasets, units, and cycles with foreign keys and unique constraints.
+- **Health Scoring**: Real-time health calculation using three primary sensors (Temperature, Pressure, Vibration).
+- **RUL Prediction**:
+  - **Baseline**: Estimating remaining cycles based on current health vs. known average failure points.
+  - **Calibrated**: Using SQL-based linear regression to fit models per dataset for more accurate predictions.
+- **Performance Evaluation**: Calculating MAE (Mean Absolute Error) and RMSE (Root Mean Square Error) against official RUL truth files.
+
+### 2. Interactive Dashboard
+A Streamlit-based interface providing:
+- **Global Overview**: Real-time status tables and RUL bar charts for all monitored units.
+- **Critical Alerts**: Highlighting engines that are predicted to "FAIL SOON".
+- **Sensor Diagnostics**: Identifying which specific sensor (e.g., Temperature, Vibration) is contributing most to health decline.
+- **Live Input Simulation**: A form to manually insert sensor readings and see instant health updates.
+- **Metric Verification**: Visualizing how well the SQL models perform against benchmark data.
+
+## Initial Setup
+
+1. **Database Creation**: Use MySQL Workbench or CLI and run [setup_full_pipeline.sql](file:///e:/DBMS-2/dbms_robot_project/setup_full_pipeline.sql). This will:
+   - Create the `cmaps` database.
+   - Set up all tables and views.
+   - Load the full dataset from `E:\DBMS-2\CMAPSSData\`.
+   - Run a final verification to ensure all rows are correctly ingested.
+
+2. **Dashboard Launch**:
+   - Navigate to the project folder.
+   - Run `pip install -r requirements.txt` (if not already done).
+   - Set your MySQL password: `set MYSQL_PASSWORD=your_password`.
+   - Run the dashboard: `streamlit run dashboard.py`.
+
+## Key Views to Explore
+
+- `v_engine_status_calibrated_norm_dyn`: The final "source of truth" for engine health and status.
+- `v_eval_metrics_cal_norm`: Shows the accuracy (MAE/RMSE) of the calibrated models.
+- `v_engine_diagnostics_norm`: Provides actionable insights on sensor health.
