@@ -1,73 +1,65 @@
-# DBMS Robot / Engine Health Prediction System
+# 🤖 Robot Health Monitoring & RUL Prediction System
 
-This project demonstrates a SQL-centric pipeline where MySQL performs health scoring, prediction, and status classification from robot/engine sensor data.
+![Status](https://img.shields.io/badge/Status-Complete-success)
+![Database](https://img.shields.io/badge/Database-MySQL-blue)
+![Python](https://img.shields.io/badge/Python-3.9+-yellow)
+![Framework](https://img.shields.io/badge/Framework-Streamlit-red)
 
-## Project Structure
+A powerful predictive maintenance pipeline that predicts the **Remaining Useful Life (RUL)** of robot engines using SQL-based analytics and real-time dashboarding.
 
-```
-dbms_robot_project/
-├── 01_create_database.sql
-├── 02_create_tables.sql
-├── 03_load_data.sql
-├── 04_views_health.sql
-├── 05_predictions.sql
-├── 06_live_input.sql
-├── 07_demo_queries.sql
-├── dashboard.py
-└── requirements.txt
-```
+---
 
-## Prerequisites
-- MySQL Server 8+
-- Python 3.9+
-- CSV dataset (e.g., `FD001_train.csv`)
+## 🚀 Key Features
 
-## Setup Steps
-1. Open MySQL client (Workbench or CLI) and run scripts in order:
-   - `01_create_database.sql`
-   - `02_create_tables.sql`
-   - Update path in `03_load_data.sql` then run it to load CSV
-   - `04_views_health.sql`
-   - `05_predictions.sql`
-   - (Optional) `06_live_input.sql`
-   - `07_demo_queries.sql`
+*   **🧠 SQL-Powered AI:** Implemented Linear Regression directly in MySQL for high-performance RUL prediction.
+*   **📡 Real-Time Dashboard:** Interactive Streamlit UI with live status updates and critical alerts.
+*   **📊 Smart Analytics:**
+    *   **Normalization:** Scaled sensor data (Temp, Pressure, Vibration) for stable health scoring.
+    *   **Dynamic Thresholds:** Automatic "FAIL SOON" alerts using SQL Percentiles.
+*   **🛠️ Deep Diagnostics:** Identifies exactly which sensor (e.g., Vibration) is causing engine decline.
+*   **📈 Proven Accuracy:** Verified against the **NASA CMAPSS Dataset** (160,000+ data points).
 
-2. CSV load notes (Windows):
-   - Ensure server allows LOCAL INFILE: `SET GLOBAL local_infile = 1;`
-   - Update the file path inside `03_load_data.sql`.
-   - `train_cycles.dataset_id` defaults to 1 and is set during load for PK integrity.
+---
 
-3. Run the dashboard:
-   ```bash
-   pip install -r requirements.txt
-   setx MYSQL_PASSWORD your_password
-   streamlit run dashboard.py
-   ```
-   Or set env variables at runtime:
-   ```bash
-   set MYSQL_HOST=localhost
-   set MYSQL_USER=root
-   set MYSQL_PASSWORD=your_password
-   set MYSQL_DB=cmaps
-   streamlit run dashboard.py
-   ```
+## 🎨 Dashboard Preview
 
-## Live Data Simulation
-Insert a new sensor reading:
-```sql
-INSERT INTO live_engine_input VALUES (1, 999, 1, 78.0, 35.0, 20.0);
-```
-Compute its health quickly:
-```sql
-SELECT unit, cycle,
-  ROUND(100 - (sensor_2*0.5) - (sensor_4*0.3) - (sensor_11*0.2), 2) AS health_score
-FROM live_engine_input
-WHERE unit = 999;
-```
+> [!TIP]
+> **Green (HEALTHY)** engines are running smoothly.
+> **Orange (FAIL SOON)** engines are in the bottom 10% of health.
+> **Red (FAILED)** engines have reached their limit (0 RUL).
 
-## Notes
-- Views:
-  - `v_engine_health` computes health from selected sensors.
-  - `v_engine_prediction` aggregates health and provides `estimated_cycles_left`.
-  - `v_engine_status` classifies into `HEALTHY`, `WARNING`, `FAIL SOON`.
-- Adjust formulas and thresholds as needed for your dataset or domain.
+---
+
+## 🛠️ Tech Stack
+
+- **Backend:** MySQL (SQL-based analytics & data storage)
+- **Frontend:** Streamlit (Python-based dashboard)
+- **Data:** Pandas (Data processing)
+- **Logic:** Linear Regression & Percentile Analysis
+
+---
+
+## 📖 Quick Start
+
+1.  **Database:** Run `setup_full_pipeline.sql` in MySQL Workbench to initialize the 160k+ row dataset.
+2.  **Environment:** 
+    ```powershell
+    pip install -r requirements.txt
+    ```
+3.  **Launch:**
+    ```powershell
+    set MYSQL_PASSWORD=your_password
+    streamlit run dashboard.py
+    ```
+
+For full details, see the **[MASTER_RUN_GUIDE.md](MASTER_RUN_GUIDE.md)**.
+
+---
+
+## 👥 Authors
+- **Suzain Sayyad** - Lead Developer & SQL Architect
+- **Rihan Afaraj** - Dashboard & Presentation Specialist
+
+---
+
+*Developed for the DBMS Robot Health Prediction Project.*
